@@ -17,19 +17,14 @@ bot = telebot.TeleBot(my_secret)
 
 @bot.message_handler(commands=['start'])
 def start(message):
-    markup = types.InlineKeyboardMarkup()
-    button1 = types.InlineKeyboardButton('English', callback_data='eng')
-    button2 = types.InlineKeyboardButton('Russian', callback_data='ru')
-    markup.add(button1, button2)
-
     user_id = message.chat.id
     sticker_id = 'CAACAgIAAxkBAAEC-dZlrGES6lWfqLWzYhArse_oICgl3wACTgEAAntOKhBCESXW3Y9-gjQE'
 
+    bot.send_message(user_id, 'Hello!')
+
     bot.send_sticker(user_id, sticker_id)
-    bot.send_message(user_id, 'Hello! | Привет!')
-    bot.send_message(user_id, 'Choose the language '
-                              '| Выбирете язык',
-                     reply_markup=markup)
+
+    langs(message)
 
     conn = sqlite3.connect('DB_game.sql')
     cur = conn.cursor()
@@ -41,17 +36,20 @@ def start(message):
 
 @bot.message_handler(commands=['language'])
 def langs(message):
-    markup = types.InlineKeyboardMarkup()
-    button1 = types.InlineKeyboardButton('English', callback_data='eng')
-    button2 = types.InlineKeyboardButton('Russian', callback_data='ru')
-    markup.add(button1, button2)
+    markup = types.InlineKeyboardMarkup(row_width=2)
+    button1 = types.InlineKeyboardButton('🇺🇸English🇺🇸', callback_data='eng')
+    button2 = types.InlineKeyboardButton('🇷🇺Русский🇷🇺', callback_data='ru')
+    button3 = types.InlineKeyboardButton('🇪🇸Español🇪🇸', callback_data='es')
+    button4 = types.InlineKeyboardButton('🇮🇷فارْسِى🇮🇷', callback_data='fa')
+    markup.add(button1, button2, button3, button4)
 
-    bot.send_message(message.chat.id, 'Choose the language '
-                                      '| Выбирете язык',
+    user_id = message.chat.id
+    bot.send_message(user_id, 'Choose the language ',
                      reply_markup=markup)
 
 
-@bot.callback_query_handler(func=lambda call: call.data in ['eng', 'ru'])
+@bot.callback_query_handler(
+    func=lambda call: call.data in ['eng', 'ru', 'es', 'fa'])
 def callback_language(query):
     data = query.data
     user_id = query.message.chat.id

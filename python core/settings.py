@@ -13,7 +13,7 @@ class Settings:
         cur = conn.cursor()
         cur.execute('CREATE TABLE IF NOT EXISTS settings_db '
                     '(user_id INTEGER PRIMARY KEY UNIQUE NOT NULL, '
-                    'language VARCHAR(10) NOT NULL)')
+                    'language VARCHAR(10) NOT NULL DEFAULT "ru" )')
         conn.commit()
         conn.close()
 
