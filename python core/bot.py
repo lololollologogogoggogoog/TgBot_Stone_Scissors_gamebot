@@ -23,7 +23,9 @@ def start(message):
     markup.add(button1, button2)
 
     user_id = message.chat.id
+    sticker_id = 'CAACAgIAAxkBAAEC-dZlrGES6lWfqLWzYhArse_oICgl3wACTgEAAntOKhBCESXW3Y9-gjQE'
 
+    bot.send_sticker(user_id, sticker_id)
     bot.send_message(user_id, 'Hello! | Привет!')
     bot.send_message(user_id, 'Choose the language '
                               '| Выбирете язык',
